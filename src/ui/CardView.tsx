@@ -2,15 +2,16 @@ import React from 'react';
 import CardMUI from './CardMUI';
 import TextField from '@material-ui/core/TextField';
 
-export default function CardView({ data, query, setQuery, setData, localData, setLocalData }: any) {
+export default function CardView({ activeData, setActiveData, localData, setLocalData }: any) {
+  const [query, setQuery] = React.useState('');
   function onSearch() {
     const temp = [
-      ...data.filter(
+      ...localData.filter(
         ({ name }: any) =>
           name?.toLowerCase().includes(query.toLowerCase()) || name?.startsWith(query),
       ),
     ];
-    temp.length > 0 && setData(temp);
+    temp.length > 0 && setActiveData(temp);
   }
 
   React.useEffect(() => {
@@ -37,7 +38,7 @@ export default function CardView({ data, query, setQuery, setData, localData, se
           onChange={(e) => setQuery(e.target.value)}
         />
         <div>
-          {data.map((x: any, index: any) => {
+          {activeData?.map((x: any, index: any) => {
             return (
               <div key={index}>
                 <CardMUI {...{ data: x }} />
